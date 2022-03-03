@@ -40,42 +40,25 @@ const useStyle = makeStyles((theme) => ({
   },
 }))
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 }
 
-function RegisterForm(props) {
+function LoginForm(props) {
   const classes = useStyle()
 
   const schema = yup.object().shape({
-    fullName: yup
-      .string()
-      .required('Full name is required')
-      .test(
-        'Should has at least two words',
-        'Please enter at least two words',
-        (value) => value.split(' ').length >= 2
-      ),
-    email: yup
+    identifier: yup
       .string()
       .email('Please enter a valid email address')
       .required('Email is required'),
-    password: yup
-      .string()
-      .required('Password is required')
-      .min(6, 'Password must be at least 6 characters'),
-    retypePassword: yup
-      .string()
-      .required('Please retype your password')
-      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    password: yup.string().required('Password is required'),
   })
 
   const form = useForm({
     defaultValues: {
-      fullName: '',
-      email: '',
+      identifier: '',
       password: '',
-      retypePassword: '',
     },
     resolver: yupResolver(schema),
   })
@@ -98,18 +81,12 @@ function RegisterForm(props) {
       </Avatar>
 
       <Typography className={classes.title} component="h3" variant="h5">
-        Create an account
+        Sign in
       </Typography>
 
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField name="fullName" label="Full Name" form={form} />
-        <InputField name="email" label="Email" form={form} />
+        <InputField name="identifier" label="Email" form={form} />
         <PasswordField name="password" label="Password" form={form} />
-        <PasswordField
-          name="retypePassword"
-          label="Retype Password"
-          form={form}
-        />
 
         <Button
           disabled={isSubmitting}
@@ -120,11 +97,11 @@ function RegisterForm(props) {
           fullWidth
           size="large"
         >
-          Sign Up
+          Sign in
         </Button>
       </form>
     </div>
   )
 }
 
-export default RegisterForm
+export default LoginForm
